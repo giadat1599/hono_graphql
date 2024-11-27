@@ -1,0 +1,19 @@
+{
+  "name": "hono_graphql",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@hono/graphql-server": "^0.5.1",
+    "hono": "^4.6.12"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.11.0",
+    "@types/bun": "latest",
+    "eslint": "^9.15.0",
+    "eslint-plugin-format": "^0.1.2"
+  }
+}

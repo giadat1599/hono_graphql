@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@hono/graphql-server": "^0.5.1",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
     "drizzle-orm": "^0.36.4",
     "hono": "^4.6.12",
     "pg": "^8.13.1",

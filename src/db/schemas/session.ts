@@ -1,3 +1,5 @@
+import type { InferSelectModel } from "drizzle-orm";
+
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 import { userTable } from "./user";
@@ -20,3 +22,5 @@ export const sessionTable = pgTable("sessions", {
     .defaultNow()
     .notNull(),
 });
+
+export type Session = Omit<InferSelectModel<typeof sessionTable>, "createdAt" | "updatedAt">;

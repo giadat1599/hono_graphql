@@ -1,6 +1,6 @@
 import { graphqlServer } from "@hono/graphql-server";
 
-import schema from "./graphql/schemas";
+import schema from "./graphql/type-defs";
 import createApp from "./lib/create-app";
 
 const app = createApp();

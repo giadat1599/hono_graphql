@@ -1,49 +1,92 @@
-import { type GraphQLFieldConfig, GraphQLNonNull } from "graphql";
+import { eq } from "drizzle-orm";
+import { GraphQLNonNull } from "graphql";
+import { setCookie } from "hono/cookie";
 
-import type { AppContext } from "@/app-context";
+import type { GraphqlResolver } from "@/graphql/graphql-resolver";
 
-import { GraphqlResponseType } from "@/graphql/type-defs/shared/response";
-import { flattenMapError } from "@/lib/utils/flatten-map-error";
+import db from "@/db";
+import { userTable } from "@/db/schemas";
+import { type MutationResponse, MutationResponseType } from "@/graphql/type-defs/shared/response";
+import { createSession, generateSessionToken } from "@/lib/session";
+import { validator } from "@/lib/utils/validator";
 
 import { type SignInInput, signInInputSchema, SignInInputType } from "./inputs/signin-input";
 import { type SignUpInput, signUpInputSchema, SignUpInputType } from "./inputs/signup-input";
 
-export const signIn: GraphQLFieldConfig<any, AppContext, { input: SignInInput }> = {
-  type: new GraphQLNonNull(GraphqlResponseType),
+const COOKIE_NAME = "hono_graphql";
+
+export const signIn: GraphqlResolver<{ input: SignInInput }> = {
+  type: new GraphQLNonNull(MutationResponseType),
   args: { input: { type: new GraphQLNonNull(SignInInputType) } },
-  resolve(_, args) {
-    const { success, error } = signInInputSchema.safeParse(args.input);
-    if (!success) {
+  async resolve(_, args, ctx): Promise<MutationResponse> {
+    const [data, errors] = validator(signInInputSchema, args.input);
+
+    if (errors.length !== 0) {
       return {
         success: false,
-        errors: flattenMapError(error.flatten().fieldErrors),
+        errors,
       };
     }
 
-    // TODO: logic for signing in
+    const user = await db.query.userTable.findFirst({
+      where: eq(userTable.username, data.username),
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        errors: ["username or password is incorrect"],
+      };
+    }
+
+    const isValidPassword = await Bun.password.verify(data.password, user.password);
+
+    if (!isValidPassword) {
+      return {
+        success: false,
+        errors: ["username or password is incorrect"],
+      };
+    }
+
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, user.id);
+
+    setCookie(ctx, COOKIE_NAME, session.id);
 
     return {
       success: true,
+      errors: [],
     };
   },
 };
 
-export const signUp: GraphQLFieldConfig<any, AppContext, { input: SignUpInput }> = {
-  type: new GraphQLNonNull(GraphqlResponseType),
+export const signUp: GraphqlResolver<{ input: SignUpInput }> = {
+  type: new GraphQLNonNull(MutationResponseType),
   args: { input: { type: new GraphQLNonNull(SignUpInputType) } },
-  resolve(_, args) {
-    const { success, error } = signUpInputSchema.safeParse(args.input);
-    if (!success) {
+  async resolve(_, args, ctx): Promise<MutationResponse> {
+    const [data, errors] = validator(signUpInputSchema, args.input);
+
+    if (errors.length !== 0) {
       return {
         success: false,
-        errors: flattenMapError(error.flatten().fieldErrors),
+        errors,
       };
     }
+    const hashedPassword = await Bun.password.hash(data.password);
 
-    // TODO: logic for signing up
+    const [user] = await db.insert(userTable).values({
+      username: data.username,
+      password: hashedPassword,
+    }).returning({ id: userTable.id });
+
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, user.id);
+
+    setCookie(ctx, COOKIE_NAME, session.id);
 
     return {
       success: true,
+      errors: [],
     };
   },
 };

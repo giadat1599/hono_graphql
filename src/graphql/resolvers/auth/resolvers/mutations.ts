@@ -92,7 +92,7 @@ export const signUp: GraphqlResolver<{ input: SignUpInput }> = {
 
 export const logOut: GraphqlResolver<{ input: string }, User> = {
   type: new GraphQLNonNull(MutationResponseType),
-  async resolve(_parent, _args, ctx) {
+  async resolve(_parent, _args, ctx): Promise<MutationResponse> {
     const session = ctx.get("session");
     if (!session) {
       ctx.status(401);

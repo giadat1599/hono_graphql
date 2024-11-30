@@ -1,19 +1,18 @@
 import { eq } from "drizzle-orm";
 import { GraphQLNonNull } from "graphql";
-import { setCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 
 import type { GraphqlResolver } from "@/graphql/graphql-resolver";
 
 import db from "@/db";
-import { userTable } from "@/db/schemas";
+import { type User, userTable } from "@/db/schemas";
 import { type MutationResponse, MutationResponseType } from "@/graphql/type-defs/shared/response";
-import { createSession, generateSessionToken } from "@/lib/session";
+import { COOKIE_NAME } from "@/lib/constants";
+import { createSession, generateSessionToken, invalidateSession } from "@/lib/session";
 import { validator } from "@/lib/utils/validator";
 
 import { type SignInInput, signInInputSchema, SignInInputType } from "./inputs/signin-input";
 import { type SignUpInput, signUpInputSchema, SignUpInputType } from "./inputs/signup-input";
-
-const COOKIE_NAME = "hono_graphql";
 
 export const signIn: GraphqlResolver<{ input: SignInInput }> = {
   type: new GraphQLNonNull(MutationResponseType),
@@ -49,9 +48,9 @@ export const signIn: GraphqlResolver<{ input: SignInInput }> = {
     }
 
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, user.id);
+    await createSession(sessionToken, user.id);
 
-    setCookie(ctx, COOKIE_NAME, session.id);
+    setCookie(ctx, COOKIE_NAME, sessionToken);
 
     return {
       success: true,
@@ -80,10 +79,30 @@ export const signUp: GraphqlResolver<{ input: SignUpInput }> = {
     }).returning({ id: userTable.id });
 
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, user.id);
+    await createSession(sessionToken, user.id);
 
-    setCookie(ctx, COOKIE_NAME, session.id);
+    setCookie(ctx, COOKIE_NAME, sessionToken);
 
+    return {
+      success: true,
+      errors: [],
+    };
+  },
+};
+
+export const logOut: GraphqlResolver<{ input: string }, User> = {
+  type: new GraphQLNonNull(MutationResponseType),
+  async resolve(_parent, _args, ctx) {
+    const session = ctx.get("session");
+    if (!session) {
+      ctx.status(401);
+      return {
+        success: false,
+        errors: ["Unauthenticated"],
+      };
+    }
+    await invalidateSession(session.id);
+    deleteCookie(ctx, COOKIE_NAME);
     return {
       success: true,
       errors: [],

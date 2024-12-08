@@ -1,5 +1,6 @@
 type Query {
   currentUser: User
+  posts: [Post]
 }
 
 type User {
@@ -12,10 +13,24 @@ type User {
 """A custom Date scalar type"""
 scalar DateISOString
 
+type Post {
+  id: Int
+  authorId: Int
+  author: User
+  title: String
+  url: String
+  content: String
+  points: Int
+  commentCount: Int
+  createdAt: DateISOString
+  updatedAt: DateISOString
+}
+
 type Mutation {
-  logOut: Response!
+  logout: Response!
   signIn(input: SignInInput!): Response!
   signUp(input: SignUpInput!): Response!
+  createPost(input: CreatePostInput!): CreatePostInputResponse
 }
 
 type Response {
@@ -34,4 +49,15 @@ input SignInInput {
 input SignUpInput {
   username: String!
   password: String!
+}
+
+type CreatePostInputResponse {
+  post: Post
+  error: Response
+}
+
+input CreatePostInput {
+  title: String!
+  url: String
+  content: String
 }

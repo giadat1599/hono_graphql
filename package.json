@@ -7,7 +7,8 @@
     "lint:fix": "eslint . --fix",
     "db:migrate:gen": "drizzle-kit generate",
     "db:migrate:run": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "sdl:gen": "bun run src/scripts/generate-sdl.ts"
   },
   "dependencies": {
     "@hono/graphql-server": "^0.5.1",

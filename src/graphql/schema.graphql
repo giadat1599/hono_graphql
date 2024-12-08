@@ -1,5 +1,6 @@
 type Query {
   currentUser: User
+  post(id: Int!): Post
   posts: [Post]
 }
 

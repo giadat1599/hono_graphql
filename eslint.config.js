@@ -10,7 +10,7 @@ export default antfu(
       semi: true,
       quotes: "double",
     },
-    ignores: ["**/migrations/*"],
+    ignores: ["src/db/migrations/*", "src/graphql/generated.ts", "src/scripts/**/*.ts"],
   },
   {
     rules: {

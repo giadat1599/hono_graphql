@@ -1,19 +1,12 @@
 import { GraphQLObjectType } from "graphql";
 
-import type { Post } from "@/db/schemas";
+import { Post } from "@/graphql/type-defs/post/post";
+import { MutationResponse } from "@/graphql/type-defs/shared/mutation-response";
 
-import { PostType } from "@/graphql/type-defs/post/post";
-import { type MutationResponse, MutationResponseType } from "@/graphql/type-defs/shared/response";
-
-export const CreatePostInputResponseType = new GraphQLObjectType({
+export const CreatePostInputResponse = new GraphQLObjectType({
   name: "CreatePostInputResponse",
   fields: {
-    post: { type: PostType },
-    error: { type: MutationResponseType },
+    post: { type: Post },
+    error: { type: MutationResponse },
   },
 });
-
-export interface CreatePostInputResponse {
-  post: Post | null;
-  error: MutationResponse | null;
-}

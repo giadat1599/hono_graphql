@@ -28,13 +28,13 @@ type Post {
 }
 
 type Mutation {
-  logout: Response!
-  signIn(input: SignInInput!): Response!
-  signUp(input: SignUpInput!): Response!
+  logout: MutationResponse!
+  signIn(input: SignInInput!): MutationResponse!
+  signUp(input: SignUpInput!): MutationResponse!
   createPost(input: CreatePostInput!): CreatePostInputResponse
 }
 
-type Response {
+type MutationResponse {
   """Indicates whether the mutation is successful or not."""
   success: Boolean!
 
@@ -54,7 +54,7 @@ input SignUpInput {
 
 type CreatePostInputResponse {
   post: Post
-  error: Response
+  error: MutationResponse
 }
 
 input CreatePostInput {

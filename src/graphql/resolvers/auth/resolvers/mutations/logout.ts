@@ -1,15 +1,16 @@
 import { GraphQLNonNull } from "graphql";
 import { deleteCookie } from "hono/cookie";
 
+import type { Mutation } from "@/graphql/generated";
 import type { GraphqlResolver } from "@/graphql/graphql-resolver";
 
-import { type MutationResponse, MutationResponseType } from "@/graphql/type-defs/shared/response";
+import { MutationResponse } from "@/graphql/type-defs/shared/mutation-response";
 import { COOKIE_NAME } from "@/lib/constants";
 import { invalidateSession } from "@/lib/session";
 
 const logOut: GraphqlResolver = {
-  type: new GraphQLNonNull(MutationResponseType),
-  async resolve(_parent, _args, ctx): Promise<MutationResponse> {
+  type: new GraphQLNonNull(MutationResponse),
+  async resolve(_parent, _args, ctx): Promise<Mutation["logout"]> {
     const session = ctx.get("session");
     if (!session) {
       ctx.status(401);

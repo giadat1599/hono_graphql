@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from "graphql";
 import { z } from "zod";
 
-export const CreatePostInputType = new GraphQLInputObjectType({
+export const CreatePostInput = new GraphQLInputObjectType({
   name: "CreatePostInput",
   fields: {
     title: { type: new GraphQLNonNull(GraphQLString) },
@@ -15,4 +15,3 @@ export const createPostInputSchema = z.object({
   url: z.string().optional(),
   content: z.string().optional(),
 });
-export type CreatePostInput = z.infer<typeof createPostInputSchema>;

@@ -1,10 +1,11 @@
+import type { Query } from "@/graphql/generated";
 import type { GraphqlResolver } from "@/graphql/graphql-resolver";
 
-import { type User, UserType } from "@/graphql/type-defs/user/user";
+import { User } from "@/graphql/type-defs/user/user";
 
 const currentUser: GraphqlResolver = {
-  type: UserType,
-  async resolve(_parent, _args, ctx): Promise<User | null> {
+  type: User,
+  async resolve(_parent, _args, ctx): Promise<Query["currentUser"]> {
     if (!ctx.get("user")) {
       ctx.status(401);
       return null;

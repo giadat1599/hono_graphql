@@ -1,17 +1,17 @@
 import { eq } from "drizzle-orm";
 import { GraphQLInt, GraphQLNonNull } from "graphql";
 
-import type { Post } from "@/db/schemas";
+import type { Query, QueryPostArgs } from "@/graphql/generated";
 import type { GraphqlResolver } from "@/graphql/graphql-resolver";
 
 import db from "@/db";
 import { postTable } from "@/db/schemas";
-import { PostType } from "@/graphql/type-defs/post/post";
+import { Post } from "@/graphql/type-defs/post/post";
 
-const post: GraphqlResolver<{ id: number }> = {
-  type: PostType,
+const post: GraphqlResolver<QueryPostArgs> = {
+  type: Post,
   args: { id: { type: new GraphQLNonNull(GraphQLInt) } },
-  async resolve(_parent, args, ctx): Promise<Post | null> {
+  async resolve(_parent, args, ctx): Promise<Query["post"]> {
     const [post] = await db.select().from(postTable).where(eq(postTable.id, args.id)).limit(1);
 
     if (!post) {

@@ -8,7 +8,8 @@
     "db:migrate:gen": "drizzle-kit generate",
     "db:migrate:run": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "sdl:gen": "bun run src/scripts/generate-sdl.ts"
+    "sdl:gen": "bun run src/scripts/generate-sdl.ts && graphql-codegen",
+    "sdl:gen:watch": "chokidar 'src/graphql/**/*.ts' --ignore 'src/graphql/generated.ts' -c 'bun run sdl:gen'"
   },
   "dependencies": {
     "@hono/graphql-server": "^0.5.1",
@@ -21,8 +22,10 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.11.0",
+    "@graphql-codegen/cli": "^5.0.3",
     "@types/bun": "latest",
     "@types/pg": "^8.11.10",
+    "chokidar-cli": "^3.0.0",
     "drizzle-kit": "^0.28.1",
     "eslint": "^9.15.0",
     "eslint-plugin-format": "^0.1.2"

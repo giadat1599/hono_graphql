@@ -4,7 +4,7 @@ import { postAuthor } from "@/graphql/resolvers/post/field-resolvers/post-author
 
 import { DateISOStringScalar } from "../scalar-types/date-iso-string";
 
-export const PostType = new GraphQLObjectType({
+export const Post = new GraphQLObjectType({
   name: "Post",
   fields: {
     id: { type: GraphQLInt },

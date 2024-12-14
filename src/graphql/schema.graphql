@@ -1,7 +1,7 @@
 type Query {
   currentUser: User
   post(id: Int!): Post
-  posts: [Post]
+  posts(nextCursor: String, limit: Int = 10): PaginatedPost
 }
 
 type User {
@@ -25,6 +25,17 @@ type Post {
   commentCount: Int
   createdAt: DateISOString
   updatedAt: DateISOString
+}
+
+type PaginatedPost {
+  data: [Post]
+  totalCount: Int
+  pageInfo: PageInfo
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean
 }
 
 type Mutation {

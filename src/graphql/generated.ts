@@ -59,6 +59,19 @@ export type MutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type PaginatedPost = {
+  __typename?: 'PaginatedPost';
+  data?: Maybe<Array<Maybe<Post>>>;
+  pageInfo?: Maybe<PageInfo>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Post = {
   __typename?: 'Post';
   author?: Maybe<User>;
@@ -77,12 +90,18 @@ export type Query = {
   __typename?: 'Query';
   currentUser?: Maybe<User>;
   post?: Maybe<Post>;
-  posts?: Maybe<Array<Maybe<Post>>>;
+  posts?: Maybe<PaginatedPost>;
 };
 
 
 export type QueryPostArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryPostsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  nextCursor?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SignInInput = {

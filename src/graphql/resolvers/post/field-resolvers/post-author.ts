@@ -16,7 +16,7 @@ export const postAuthor: GraphqlResolver<any, Post> = {
       createdAt: userTable.createdAt,
       updatedAt: userTable.updatedAt,
 
-    }).from(userTable).where(eq(userTable.id, parent.authorId!));
+    }).from(userTable).where(eq(userTable.id, parent.authorId));
 
     return user;
   },

@@ -16,15 +16,15 @@ scalar DateISOString
 
 type Post {
   id: Int
-  authorId: Int
+  authorId: Int!
   author: User
-  title: String
+  title: String!
   url: String
   content: String
   points: Int
   commentCount: Int
-  createdAt: DateISOString
-  updatedAt: DateISOString
+  createdAt: DateISOString!
+  updatedAt: DateISOString!
 }
 
 type PaginatedPost {

@@ -75,14 +75,14 @@ export type PaginatedPost = {
 export type Post = {
   __typename?: 'Post';
   author?: Maybe<User>;
-  authorId?: Maybe<Scalars['Int']['output']>;
+  authorId: Scalars['Int']['output'];
   commentCount?: Maybe<Scalars['Int']['output']>;
   content?: Maybe<Scalars['String']['output']>;
-  createdAt?: Maybe<Scalars['DateISOString']['output']>;
+  createdAt: Scalars['DateISOString']['output'];
   id?: Maybe<Scalars['Int']['output']>;
   points?: Maybe<Scalars['Int']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['DateISOString']['output']>;
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['DateISOString']['output'];
   url?: Maybe<Scalars['String']['output']>;
 };
 

@@ -15,13 +15,13 @@ const posts: GraphqlResolver<QueryPostsArgs> = {
   args: paginationArgs,
   async resolve(_parent, args): Promise<Query["posts"]> {
     const nextCursor = args.nextCursor;
-    const limit = args.limit ?? DEFAULT_PAGE_SIZE;
+    const pageSize = args.limit ?? DEFAULT_PAGE_SIZE;
     const [totalCount] = await db.select({ count: count() }).from(postTable);
-    const posts = await db.select().from(postTable).where(nextCursor ? gt(postTable.id, Number.parseInt(nextCursor)) : undefined).limit((limit || 10) + 1);
+    const posts = await db.select().from(postTable).where(nextCursor ? gt(postTable.id, Number.parseInt(nextCursor)) : undefined).limit(pageSize + 1);
     return {
-      data: posts.slice(0, limit),
+      data: posts.slice(0, pageSize),
       totalCount: totalCount.count,
-      pageInfo: getPageInfo(posts, limit),
+      pageInfo: getPageInfo(posts, pageSize),
     };
   },
 };

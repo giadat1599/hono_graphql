@@ -2,7 +2,7 @@ import { deleteCookie, getCookie } from "hono/cookie";
 
 import { graphqlServer } from "@hono/graphql-server";
 
-import schema from "./graphql/type-defs";
+import schema from "./graphql";
 import { COOKIE_NAME } from "./lib/constants";
 import createApp from "./lib/create-app";
 import { validateSessionToken } from "./lib/session";

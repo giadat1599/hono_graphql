@@ -2,7 +2,7 @@ import { printSchema } from "graphql";
 import fs from "node:fs";
 import path from "node:path";
 
-import schema from "@/graphql/type-defs";
+import schema from "@/graphql";
 
 const gqlSDLPath = path.resolve(__dirname, "../graphql/schema.graphql");
 

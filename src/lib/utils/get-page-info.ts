@@ -1,4 +1,4 @@
-import type { PageInfo } from "@/graphql/generated";
+import type { PageInfo } from "@/graphql/__generated.ts";
 
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 

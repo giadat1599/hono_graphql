@@ -42,7 +42,7 @@ type Mutation {
   logout: MutationResponse!
   signIn(input: SignInInput!): MutationResponse!
   signUp(input: SignUpInput!): MutationResponse!
-  createPost(input: CreatePostInput!): CreatePostInputResponse
+  createPost(input: CreatePostInput!): CreatePostPayload
 }
 
 type MutationResponse {
@@ -63,9 +63,14 @@ input SignUpInput {
   password: String!
 }
 
-type CreatePostInputResponse {
+type CreatePostPayload {
   post: Post
-  error: MutationResponse
+
+  """Indicates whether the mutation is successful or not."""
+  success: Boolean!
+
+  """Validation errors if any"""
+  errors: [String]
 }
 
 input CreatePostInput {

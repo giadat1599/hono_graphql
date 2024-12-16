@@ -15,14 +15,30 @@ type User {
 scalar DateISOString
 
 type Post {
-  id: Int
+  id: Int!
   authorId: Int!
   author: User
   title: String!
   url: String
   content: String
-  points: Int
-  commentCount: Int
+  points: Int!
+  commentCount: Int!
+  comments: [Comment]!
+  createdAt: DateISOString!
+  updatedAt: DateISOString!
+}
+
+type Comment {
+  id: Int
+  authorId: Int
+  author: User
+  postId: Int!
+  post: Post!
+  parentCommentId: Int
+  content: String
+  depth: Int!
+  points: Int!
+  commentCount: Int!
   createdAt: DateISOString!
   updatedAt: DateISOString!
 }

@@ -13,7 +13,7 @@ import { getPageInfo } from "@/lib/utils/get-page-info";
 const posts: GraphqlResolver<QueryPostsArgs> = {
   type: paginatedResultType(Post),
   args: paginationArgs,
-  async resolve(_parent, args): Promise<Query["posts"]> {
+  async resolve(_parent, args): Promise<Omit<Query["posts"], "comments">> {
     const nextCursor = args.nextCursor;
     const pageSize = args.limit ?? DEFAULT_PAGE_SIZE;
     const [totalCount] = await db.select({ count: count() }).from(postTable);

@@ -1,6 +1,8 @@
-import type { InferSelectModel } from "drizzle-orm";
-
+import { type InferSelectModel, relations } from "drizzle-orm";
 import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+
+import { commentTable } from "./comment";
+import { postTable } from "./post";
 
 export const userTable = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -17,5 +19,10 @@ export const userTable = pgTable("users", {
     .defaultNow()
     .notNull(),
 });
+
+export const userRelation = relations(userTable, ({ many }) => ({
+  posts: many(postTable, { relationName: "author" }),
+  comments: many(commentTable, { relationName: "author" }),
+}));
 
 export type User = InferSelectModel<typeof userTable>;

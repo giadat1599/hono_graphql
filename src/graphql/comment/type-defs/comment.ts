@@ -1,22 +1,23 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 
-import { postAuthor } from "@/graphql/post/field-resolvers/post-author";
 import { DateISOStringScalar } from "@/graphql/shared/scalar-types/date-iso-string";
 
-import { postComments } from "../field-resolvers/post-comments";
+import { commentAuthor } from "../field-resolvers/comment-author";
+import { commentPost } from "../field-resolvers/comment-post";
 
-export const Post = new GraphQLObjectType({
-  name: "Post",
+export const Comment = new GraphQLObjectType({
+  name: "Comment",
   fields: {
-    id: { type: new GraphQLNonNull(GraphQLInt) },
-    authorId: { type: new GraphQLNonNull(GraphQLInt) },
-    author: postAuthor,
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    url: { type: GraphQLString },
+    id: { type: GraphQLInt },
+    authorId: { type: GraphQLInt },
+    author: commentAuthor,
+    postId: { type: new GraphQLNonNull(GraphQLInt) },
+    post: commentPost,
+    parentCommentId: { type: GraphQLInt },
     content: { type: GraphQLString },
+    depth: { type: new GraphQLNonNull(GraphQLInt) },
     points: { type: new GraphQLNonNull(GraphQLInt) },
     commentCount: { type: new GraphQLNonNull(GraphQLInt) },
-    comments: postComments,
     createdAt: { type: new GraphQLNonNull(DateISOStringScalar) },
     updatedAt: { type: new GraphQLNonNull(DateISOStringScalar) },
   },

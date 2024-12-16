@@ -1,15 +1,18 @@
 import { eq } from "drizzle-orm";
 
-import type { Post, User } from "@/graphql/__generated.ts";
+import type { Comment, Maybe, User } from "@/graphql/__generated";
 import type { GraphqlResolver } from "@/graphql/graphql-resolver";
 
 import db from "@/db";
 import { userTable } from "@/db/schemas";
 import { User as UserType } from "@/graphql/user/type-defs/user";
 
-export const postAuthor: GraphqlResolver<any, Post> = {
+export const commentAuthor: GraphqlResolver<any, Comment> = {
   type: UserType,
-  async resolve(parent): Promise<User> {
+  async resolve(parent): Promise<Maybe<User>> {
+    if (!parent.authorId) {
+      return null;
+    }
     const [user] = await db.select({
       id: userTable.id,
       username: userTable.username,

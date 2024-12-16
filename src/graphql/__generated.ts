@@ -16,6 +16,22 @@ export type Scalars = {
   DateISOString: { input: any; output: any; }
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  author?: Maybe<User>;
+  authorId?: Maybe<Scalars['Int']['output']>;
+  commentCount: Scalars['Int']['output'];
+  content?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateISOString']['output'];
+  depth: Scalars['Int']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
+  parentCommentId?: Maybe<Scalars['Int']['output']>;
+  points: Scalars['Int']['output'];
+  post: Post;
+  postId: Scalars['Int']['output'];
+  updatedAt: Scalars['DateISOString']['output'];
+};
+
 export type CreatePostInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
@@ -79,11 +95,12 @@ export type Post = {
   __typename?: 'Post';
   author?: Maybe<User>;
   authorId: Scalars['Int']['output'];
-  commentCount?: Maybe<Scalars['Int']['output']>;
+  commentCount: Scalars['Int']['output'];
+  comments: Array<Maybe<Comment>>;
   content?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateISOString']['output'];
-  id?: Maybe<Scalars['Int']['output']>;
-  points?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  points: Scalars['Int']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['DateISOString']['output'];
   url?: Maybe<Scalars['String']['output']>;

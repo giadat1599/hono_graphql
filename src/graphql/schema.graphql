@@ -23,7 +23,7 @@ type Post {
   content: String
   points: Int!
   commentCount: Int!
-  comments: [Comment]!
+  comments: [Comment]
   createdAt: DateISOString!
   updatedAt: DateISOString!
 }
@@ -39,6 +39,7 @@ type Comment {
   depth: Int!
   points: Int!
   commentCount: Int!
+  childComments: [Comment]
   createdAt: DateISOString!
   updatedAt: DateISOString!
 }

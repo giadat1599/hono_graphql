@@ -1,9 +1,9 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 
+import { childComments } from "@/graphql/comment/field-resolvers/child-comments";
+import { commentAuthor } from "@/graphql/comment/field-resolvers/comment-author";
+import { commentPost } from "@/graphql/comment/field-resolvers/comment-post";
 import { DateISOStringScalar } from "@/graphql/shared/scalar-types/date-iso-string";
-
-import { commentAuthor } from "../field-resolvers/comment-author";
-import { commentPost } from "../field-resolvers/comment-post";
 
 export const Comment = new GraphQLObjectType({
   name: "Comment",
@@ -18,6 +18,7 @@ export const Comment = new GraphQLObjectType({
     depth: { type: new GraphQLNonNull(GraphQLInt) },
     points: { type: new GraphQLNonNull(GraphQLInt) },
     commentCount: { type: new GraphQLNonNull(GraphQLInt) },
+    childComments,
     createdAt: { type: new GraphQLNonNull(DateISOStringScalar) },
     updatedAt: { type: new GraphQLNonNull(DateISOStringScalar) },
   },

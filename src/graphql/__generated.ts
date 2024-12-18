@@ -20,6 +20,7 @@ export type Comment = {
   __typename?: 'Comment';
   author?: Maybe<User>;
   authorId?: Maybe<Scalars['Int']['output']>;
+  childComments?: Maybe<Array<Maybe<Comment>>>;
   commentCount: Scalars['Int']['output'];
   content?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateISOString']['output'];
@@ -116,7 +117,7 @@ export type Post = {
   author?: Maybe<User>;
   authorId: Scalars['Int']['output'];
   commentCount: Scalars['Int']['output'];
-  comments: Array<Maybe<Comment>>;
+  comments?: Maybe<Array<Maybe<Comment>>>;
   content?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateISOString']['output'];
   id: Scalars['Int']['output'];

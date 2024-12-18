@@ -59,6 +59,7 @@ type Mutation {
   signIn(input: SignInInput!): MutationResponse!
   signUp(input: SignUpInput!): MutationResponse!
   createPost(input: CreatePostInput!): CreatePostPayload
+  createPostComment(input: CreatePostCommentInput!): CreatePostCommentPayload
 }
 
 type MutationResponse {
@@ -93,4 +94,19 @@ input CreatePostInput {
   title: String!
   url: String
   content: String
+}
+
+type CreatePostCommentPayload {
+  comment: Comment
+
+  """Indicates whether the mutation is successful or not."""
+  success: Boolean!
+
+  """Validation errors if any"""
+  errors: [String]
+}
+
+input CreatePostCommentInput {
+  postId: Int!
+  content: String!
 }

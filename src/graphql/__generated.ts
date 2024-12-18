@@ -32,6 +32,20 @@ export type Comment = {
   updatedAt: Scalars['DateISOString']['output'];
 };
 
+export type CreatePostCommentInput = {
+  content: Scalars['String']['input'];
+  postId: Scalars['Int']['input'];
+};
+
+export type CreatePostCommentPayload = {
+  __typename?: 'CreatePostCommentPayload';
+  comment?: Maybe<Comment>;
+  /** Validation errors if any */
+  errors?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Indicates whether the mutation is successful or not. */
+  success: Scalars['Boolean']['output'];
+};
+
 export type CreatePostInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
@@ -50,6 +64,7 @@ export type CreatePostPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   createPost?: Maybe<CreatePostPayload>;
+  createPostComment?: Maybe<CreatePostCommentPayload>;
   logout: MutationResponse;
   signIn: MutationResponse;
   signUp: MutationResponse;
@@ -58,6 +73,11 @@ export type Mutation = {
 
 export type MutationCreatePostArgs = {
   input: CreatePostInput;
+};
+
+
+export type MutationCreatePostCommentArgs = {
+  input: CreatePostCommentInput;
 };
 
 

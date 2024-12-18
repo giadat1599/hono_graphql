@@ -42,7 +42,7 @@ const createPost: GraphqlResolver<MutationCreatePostArgs> = {
     }).returning();
 
     return {
-      post,
+      post: { ...post, comments: [] },
       success: true,
       errors: null,
     };

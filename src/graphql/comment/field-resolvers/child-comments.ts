@@ -14,6 +14,7 @@ export const childComments: GraphqlResolver<any, Comment> = {
     if (!parent.id) {
       return null;
     }
+    // TODO: should handle pagination together with orderBy
     const comments = await db.select().from(commentTable).where(eq(commentTable.parentCommentId, parent.id));
 
     return comments.map(comment => ({ ...comment, post: {} as Post }));

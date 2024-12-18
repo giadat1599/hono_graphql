@@ -17,6 +17,7 @@ const posts: GraphqlResolver<QueryPostsArgs> = {
     const nextCursor = args.nextCursor;
     const pageSize = args.limit ?? DEFAULT_PAGE_SIZE;
     const [totalCount] = await db.select({ count: count() }).from(postTable);
+    // TODO: should handle pagination together with orderBy
     const posts = await db.select().from(postTable).where(nextCursor ? gt(postTable.id, Number.parseInt(nextCursor)) : undefined).limit(pageSize + 1);
     return {
       data: posts.slice(0, pageSize),
